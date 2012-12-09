@@ -1,7 +1,8 @@
-package com.alex.servletProject;
+package com.alex.servletProject.exceptions;
 
 /**
- * Called when an error of class {@link MachineService} (DB connection error, not found id machine)
+ * Сalled when a system error occurs
+ * (DB connection error, not found id machine)
  * Date: 12/9/12
  *
  * @author Alex Rakitsky

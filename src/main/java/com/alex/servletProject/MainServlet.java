@@ -1,5 +1,7 @@
 package com.alex.servletProject;
 
+import com.alex.servletProject.exceptions.MachineException;
+import com.alex.servletProject.exceptions.StateChangeException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -8,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * </>Servlet to test the signal sequence.
@@ -37,7 +41,14 @@ public class MainServlet extends HttpServlet {
      * Constructor with not param. That initializes all the facilities required for the application.
      */
     public MainServlet() {
-        machineService = new MachineService();
+        Map<String, Machine> machineMap = new HashMap<String,Machine>(){{
+            put("1",new Machine("1"));
+            put("2",new Machine("2"));
+            put("3",new Machine("3"));
+            put("4",new Machine("4"));
+            put("5",new Machine("5"));
+        }};
+        machineService = new MachineService(machineMap);
     }
 
 
@@ -61,9 +72,8 @@ public class MainServlet extends HttpServlet {
         LOG.debug("Main request signal :: " + signal + "; machine id :: " + id);
 
         try {
-            String responseState = machineService.setState(id, signal);
-            LOG.debug("Response :: " + responseState);
-            out.print(responseState);
+            machineService.setState(id, signal);
+
             resp.setStatus(Constants.RESPONSE_OK);
         } catch (IllegalArgumentException e) {
             LOG.warn(e);
@@ -71,6 +81,10 @@ public class MainServlet extends HttpServlet {
         } catch (MachineException e) {
             LOG.warn(e);
             resp.setStatus(Constants.RESPONSE_SERVER_ERROR);
+        } catch (StateChangeException e) {
+            LOG.info(e);
+            out.print(e.getMessage());
+            resp.setStatus(Constants.RESPONSE_OK);
         }
 
     }

@@ -1,9 +1,11 @@
 package com.alex.servletProject;
 
-import org.junit.Before;
-import org.junit.Test;
+import com.alex.servletProject.exceptions.MachineException;
+import com.alex.servletProject.exceptions.StateChangeException;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -12,11 +14,12 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test for MainServlet class.
+ * Test for {@link MainServlet}.
  * Date: 12/8/12
  *
  * @author Alex Rakitsky
  */
+@Test(groups = "unit")
 public class MainServletTest {
 
     private MachineService machineService;
@@ -24,7 +27,7 @@ public class MainServletTest {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
-    @Before
+    @BeforeMethod
     public void init() {
         machineService = createMock(MachineService.class);
         mainServlet = new MainServlet(machineService);
@@ -33,25 +36,24 @@ public class MainServletTest {
     }
 
     @Test
-    public void machineServiceResponse() throws ServletException, IOException, MachineException {
+    public void machineServiceResponse() throws ServletException, IOException, MachineException, StateChangeException {
         String signal = "1";
         String machineId = "1";
-        String responseMessage = "Test_Message";
         request.setParameter(Constants.REQUEST_SIGNAL, signal);
         request.setParameter(Constants.REQUEST_ID_MACHINE, machineId);
-        expect(machineService.setState(machineId, signal)).andReturn(responseMessage);
+        machineService.setState(machineId, signal);
         replay(machineService);
 
         mainServlet.doGet(request, response);
 
         assertEquals(Constants.RESPONSE_OK, response.getStatus());
-        assertEquals(responseMessage, response.getContentAsString());
         verify(machineService);
     }
 
     @Test
-    public void callIllegalArgumentException() throws ServletException, IOException, MachineException {
-        expect(machineService.setState(null, null)).andThrow(new IllegalArgumentException());
+    public void callIllegalArgumentException() throws ServletException, IOException, MachineException, StateChangeException {
+        machineService.setState(null, null);
+        expectLastCall().andThrow(new IllegalArgumentException());
         replay(machineService);
 
         mainServlet.doGet(request, response);
@@ -61,13 +63,28 @@ public class MainServletTest {
     }
 
     @Test
-    public void testMachineExceptionCalled() throws ServletException, IOException, MachineException {
-        expect(machineService.setState(null, null)).andThrow(new MachineException());
+    public void testMachineExceptionCalled() throws ServletException, IOException, MachineException, StateChangeException {
+        machineService.setState(null, null);
+        expectLastCall().andThrow(new MachineException());
         replay(machineService);
 
         mainServlet.doGet(request, response);
 
         assertEquals(Constants.RESPONSE_SERVER_ERROR, response.getStatus());
+        verify(machineService);
+    }
+
+    @Test
+    public void testMachineStateChangeExceptionCalled() throws ServletException, IOException, MachineException, StateChangeException {
+        machineService.setState(null, null);
+        String message = "Test Exception";
+        expectLastCall().andThrow(new StateChangeException(message));
+        replay(machineService);
+
+        mainServlet.doGet(request, response);
+
+        assertEquals(Constants.RESPONSE_OK, response.getStatus());
+        assertEquals(message,response.getContentAsString());
         verify(machineService);
     }
 }
