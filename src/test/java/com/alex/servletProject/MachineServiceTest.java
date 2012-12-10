@@ -1,6 +1,6 @@
 package com.alex.servletProject;
 
-import com.alex.servletProject.exceptions.MachineException;
+import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -21,9 +21,10 @@ import static org.testng.Assert.assertEquals;
 @Test(groups = "unit")
 public class MachineServiceTest {
 
-    public static final String ID_1 = "1";
+    public static final String CORRECT_ID = "1";
     public static final String ID_2 = "2";
     public static final String CORRECT_SIGNAL = "1";
+    public static final int CORRECT_ID_INT = 1;
     private Machine machine_1;
 
     private Machine machine_2;
@@ -36,7 +37,7 @@ public class MachineServiceTest {
         machine_1 = createMock(Machine.class);
         machine_2 = createMock(Machine.class);
         mockMachineMap = new HashMap<String,Machine>(){{
-            put(ID_1, machine_1);
+            put(CORRECT_ID, machine_1);
             put(ID_2, machine_2);
         }};
         machineService = new MachineService(mockMachineMap);
@@ -45,12 +46,12 @@ public class MachineServiceTest {
     @DataProvider(name = "illegalArguments")
     public static Object[][] createIllegalData() {
         return new Object[][]{
-                new Object[]{ID_1, null},
+                new Object[]{CORRECT_ID, null},
                 new Object[]{null, CORRECT_SIGNAL},
-                new Object[]{ID_1,"blah"},
+                new Object[]{CORRECT_ID,"blah"},
                 new Object[]{"blah",CORRECT_SIGNAL},
-                new Object[]{ID_1,"2"},
-                new Object[]{ID_1,"-1"},
+                new Object[]{CORRECT_ID,"2"},
+                new Object[]{CORRECT_ID,"-1"},
                 new Object[]{"3",CORRECT_SIGNAL},
         };
     }
@@ -58,21 +59,21 @@ public class MachineServiceTest {
     @DataProvider(name = "correctArguments")
     public static Object[][] createCorrectData(){
         return new Object[][] {
-                new Object[]{ID_1,CORRECT_SIGNAL},
+                new Object[]{CORRECT_ID,CORRECT_SIGNAL},
         };
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class, dataProvider = "illegalArguments")
-    public void incorrectInputValue(String machineId, String status) throws MachineException, StateChangeException {
+    public void incorrectInputValue(String machineId, String status) throws SystemException, StateChangeException {
         machineService.setState(machineId, status);
     }
 
     @Test
-    public void testCorrectValues() throws MachineException, StateChangeException {
-        String  machineId=ID_1;
+    public void testCorrectValues() throws SystemException, StateChangeException {
+        String  machineId= CORRECT_ID;
         String message = "Test message";
         Machine machine = mockMachineMap.get(machineId);
-        expect(machine.nextState()).andReturn(message);
+        expect(machine.nextState(CORRECT_ID_INT)).andReturn(message);
         replay(machine);
 
         String result = machineService.setState(machineId, CORRECT_SIGNAL);
@@ -82,10 +83,10 @@ public class MachineServiceTest {
     }
 
     @Test(expectedExceptions = StateChangeException.class)
-    public void testThrowStateChangeException() throws MachineException, StateChangeException {
-        String  machineId=ID_1;
+    public void testThrowStateChangeException() throws SystemException, StateChangeException {
+        String  machineId= CORRECT_ID;
         Machine machine = mockMachineMap.get(machineId);
-        machine.nextState();
+        machine.nextState(CORRECT_ID_INT);
         expectLastCall().andThrow(new StateChangeException("TEST_EXCEPTION"));
         replay(machine);
 
@@ -94,12 +95,12 @@ public class MachineServiceTest {
         verify(machine);
     }
 
-    @Test(expectedExceptions = MachineException.class)
-    public void testThrowMachineException() throws MachineException, StateChangeException {
-        String  machineId=ID_1;
+    @Test(expectedExceptions = SystemException.class)
+    public void testThrowMachineException() throws SystemException, StateChangeException {
+        String  machineId= CORRECT_ID;
         Machine machine = mockMachineMap.get(machineId);
-        machine.nextState();
-        expectLastCall().andThrow(new MachineException());
+        machine.nextState(CORRECT_ID_INT);
+        expectLastCall().andThrow(new SystemException());
         replay(machine);
 
         machineService.setState(machineId, CORRECT_SIGNAL);

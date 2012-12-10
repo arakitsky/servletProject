@@ -1,7 +1,7 @@
 package com.alex.servletProject;
 
 
-import com.alex.servletProject.exceptions.MachineException;
+import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
 
 import java.util.Map;
@@ -29,12 +29,12 @@ public class MachineService {
      * @param machineId id machine. Look for the available machines,
      *                  if the machine has not been found - called {@link IllegalArgumentException}
      * @param signal type of signal. Can only be 1 or 0. If incorrect - called {@link IllegalArgumentException}
-     * @throws MachineException when a system error (Error connecting to the database, read error, etc.)
+     * @throws com.alex.servletProject.exceptions.SystemException when a system error (Error connecting to the database, read error, etc.)
      * @throws StateChangeException when an error has changed the status,
      *                              error read from various sources (databases, xml, etc.)
      * @return status of machine
      */
-    public String setState(String machineId, String signal) throws MachineException,StateChangeException {
+    public String setState(String machineId, String signal) throws SystemException,StateChangeException {
         int signalInt;
 
         //check input values
@@ -56,7 +56,7 @@ public class MachineService {
             throw new IllegalArgumentException();
         }
 
-       return machine.nextState();
+       return machine.nextState(signalInt);
 
     }
 }

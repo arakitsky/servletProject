@@ -1,6 +1,6 @@
 package com.alex.servletProject;
 
-import com.alex.servletProject.exceptions.MachineException;
+import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -36,7 +36,7 @@ public class MainServletTest {
     }
 
     @Test
-    public void machineServiceResponse() throws ServletException, IOException, MachineException, StateChangeException {
+    public void machineServiceResponse() throws ServletException, IOException, SystemException, StateChangeException {
         String signal = "1";
         String machineId = "1";
         String message = "Test message";
@@ -53,7 +53,7 @@ public class MainServletTest {
     }
 
     @Test
-    public void callIllegalArgumentException() throws ServletException, IOException, MachineException, StateChangeException {
+    public void callIllegalArgumentException() throws ServletException, IOException, SystemException, StateChangeException {
         machineService.setState(null, null);
         expectLastCall().andThrow(new IllegalArgumentException());
         replay(machineService);
@@ -65,9 +65,9 @@ public class MainServletTest {
     }
 
     @Test
-    public void testMachineExceptionCalled() throws ServletException, IOException, MachineException, StateChangeException {
+    public void testSystemExceptionCalled() throws ServletException, IOException, SystemException, StateChangeException {
         machineService.setState(null, null);
-        expectLastCall().andThrow(new MachineException());
+        expectLastCall().andThrow(new SystemException());
         replay(machineService);
 
         mainServlet.doGet(request, response);
@@ -77,7 +77,7 @@ public class MainServletTest {
     }
 
     @Test
-    public void testMachineStateChangeExceptionCalled() throws ServletException, IOException, MachineException, StateChangeException {
+    public void testMachineStateChangeExceptionCalled() throws ServletException, IOException, SystemException, StateChangeException {
         machineService.setState(null, null);
         String message = "Test Exception";
         expectLastCall().andThrow(new StateChangeException(message));

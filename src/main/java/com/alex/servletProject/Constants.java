@@ -6,7 +6,7 @@ package com.alex.servletProject;
  *
  * @author Alex Rakitsky
  */
-public class Constants {
+public final class Constants {
 
     /**
      * Response status, set with no errors
@@ -35,4 +35,9 @@ public class Constants {
      * http request params for signal
      */
     public static final String REQUEST_SIGNAL = "signal";
+
+    /**
+     * Message passing all states
+     */
+    public static final String MESSAGE_STATES_COMPLETED = "All ok";
 }

@@ -1,6 +1,6 @@
 package com.alex.servletProject;
 
-import com.alex.servletProject.exceptions.MachineException;
+import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
 import org.apache.log4j.Logger;
 
@@ -42,11 +42,11 @@ public class MainServlet extends HttpServlet {
      */
     public MainServlet() {
         Map<String, Machine> machineMap = new HashMap<String,Machine>(){{
-            put("1",new Machine("1"));
-            put("2",new Machine("2"));
-            put("3",new Machine("3"));
-            put("4",new Machine("4"));
-            put("5",new Machine("5"));
+            put("1",new Machine("1",null,null,null));
+            put("2",new Machine("2",null,null,null));
+            put("3",new Machine("3",null,null,null));
+            put("4",new Machine("4",null,null,null));
+            put("5",new Machine("5",null,null,null));
         }};
         machineService = new MachineService(machineMap);
     }
@@ -81,7 +81,7 @@ public class MainServlet extends HttpServlet {
         } catch (IllegalArgumentException e) {
             LOG.warn(e);
             resp.setStatus(Constants.RESPONSE_BED);
-        } catch (MachineException e) {
+        } catch (SystemException e) {
             LOG.warn(e);
             resp.setStatus(Constants.RESPONSE_SERVER_ERROR);
         } catch (StateChangeException e) {

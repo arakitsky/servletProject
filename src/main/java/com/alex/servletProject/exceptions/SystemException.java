@@ -7,13 +7,13 @@ package com.alex.servletProject.exceptions;
  *
  * @author Alex Rakitsky
  */
-public class MachineException extends Exception {
+public class SystemException extends Exception {
 
     /**
-     * Constructs an <code>MachineException</code> with no
+     * Constructs an <code>SystemException</code> with no
      * detail message.
      */
-    public MachineException() {
+    public SystemException() {
         super();
     }
 
