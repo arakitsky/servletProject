@@ -4,7 +4,7 @@
 
     <test name="servletProject">
         <packages>
-            <package name="com.alex.servletProject"/>
+            <package name="com.alex.servletProject.*"/>
         </packages>
     </test>
 

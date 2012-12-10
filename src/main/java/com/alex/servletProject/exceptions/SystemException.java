@@ -17,4 +17,10 @@ public class SystemException extends Exception {
         super();
     }
 
+    /**
+     * Sends an error message up the hierarchy.
+     */
+    public SystemException(Throwable cause) {
+        super(cause);
+    }
 }

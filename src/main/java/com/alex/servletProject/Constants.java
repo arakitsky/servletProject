@@ -28,16 +28,37 @@ public final class Constants {
     public static final int RESPONSE_SERVER_ERROR = 500;
 
     /**
-     * http request params for machine id
+     * http request params for machine id.
      */
     public static final String REQUEST_ID_MACHINE = "id";
     /**
-     * http request params for signal
+     * http request params for signal.
      */
     public static final String REQUEST_SIGNAL = "signal";
 
     /**
-     * Message passing all states
+     * Message passing all states.
      */
     public static final String MESSAGE_STATES_COMPLETED = "All ok";
+
+    /**
+     * Jdbc driver name.
+     */
+    public static final String JDBC_DRIVER = "org.hsqldb.jdbcDriver";
+    /**
+     * Jdbc database name.
+     */
+    public static final String JDBC_DB_NAME = "machineMock";
+    /**
+     * Jdbc name of database user.
+     */
+    public static final String JDBS_USER = "su";
+    /**
+     * Jdbc password of database user.
+     */
+    public static final String JDBC_PASSWORD = "";
+    /**
+     * Jdbc url.
+     */
+    public static final String JDBC_URL = "jdbc:hsqldb:";
 }
