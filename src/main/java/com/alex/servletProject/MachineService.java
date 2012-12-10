@@ -32,8 +32,9 @@ public class MachineService {
      * @throws MachineException when a system error (Error connecting to the database, read error, etc.)
      * @throws StateChangeException when an error has changed the status,
      *                              error read from various sources (databases, xml, etc.)
+     * @return status of machine
      */
-    public void setState(String machineId, String signal) throws MachineException,StateChangeException {
+    public String setState(String machineId, String signal) throws MachineException,StateChangeException {
         int signalInt;
 
         //check input values
@@ -55,7 +56,7 @@ public class MachineService {
             throw new IllegalArgumentException();
         }
 
-        machine.nextState();
+       return machine.nextState();
 
     }
 }

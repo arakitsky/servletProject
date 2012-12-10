@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.easymock.EasyMock.*;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Test class for {@link MachineService}.
@@ -69,12 +70,14 @@ public class MachineServiceTest {
     @Test
     public void testCorrectValues() throws MachineException, StateChangeException {
         String  machineId=ID_1;
+        String message = "Test message";
         Machine machine = mockMachineMap.get(machineId);
-        machine.nextState();
+        expect(machine.nextState()).andReturn(message);
         replay(machine);
 
-        machineService.setState(machineId, CORRECT_SIGNAL);
+        String result = machineService.setState(machineId, CORRECT_SIGNAL);
 
+        assertEquals(message,result);
         verify(machine);
     }
 

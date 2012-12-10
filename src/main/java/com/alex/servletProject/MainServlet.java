@@ -72,8 +72,11 @@ public class MainServlet extends HttpServlet {
         LOG.debug("Main request signal :: " + signal + "; machine id :: " + id);
 
         try {
-            machineService.setState(id, signal);
 
+            String response = machineService.setState(id, signal);
+
+            LOG.debug("Response :: " + response);
+            out.print(response);
             resp.setStatus(Constants.RESPONSE_OK);
         } catch (IllegalArgumentException e) {
             LOG.warn(e);

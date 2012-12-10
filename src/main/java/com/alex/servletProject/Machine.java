@@ -14,11 +14,13 @@ public class Machine {
 
     private final String id;
 
+    private State currentState;
+
     public Machine(String id) {
         this.id=id;
     }
 
-    public void nextState() throws MachineException, StateChangeException {
+    public String nextState() throws MachineException, StateChangeException {
         throw new NotImplementedException();
     }
 }

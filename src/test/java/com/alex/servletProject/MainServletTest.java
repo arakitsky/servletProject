@@ -39,14 +39,16 @@ public class MainServletTest {
     public void machineServiceResponse() throws ServletException, IOException, MachineException, StateChangeException {
         String signal = "1";
         String machineId = "1";
+        String message = "Test message";
         request.setParameter(Constants.REQUEST_SIGNAL, signal);
         request.setParameter(Constants.REQUEST_ID_MACHINE, machineId);
-        machineService.setState(machineId, signal);
+        expect(machineService.setState(machineId, signal)).andReturn(message);
         replay(machineService);
 
         mainServlet.doGet(request, response);
 
         assertEquals(Constants.RESPONSE_OK, response.getStatus());
+        assertEquals(message,response.getContentAsString());
         verify(machineService);
     }
 
