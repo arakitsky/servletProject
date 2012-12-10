@@ -5,7 +5,6 @@ import com.alex.servletProject.exceptions.SystemException;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.text.MessageFormat;
 
 
 /**
@@ -19,9 +18,9 @@ import java.text.MessageFormat;
 public class MachineDAO implements AutoCloseable {
 
     public static final String SQL_CREATE_TABLE = "CREATE TABLE sample_table ( id INTEGER IDENTITY, machine_id VARCHAR(256), machine_error VARCHAR(256))";
-    public static final String SQL_INSERT_PATTERN = "INSERT INTO sample_table(machine_id,machine_error) VALUES('${0},${1}')";
+    public static final String SQL_INSERT_PATTERN = "INSERT INTO sample_table(machine_id,machine_error) VALUES('%s','%s')";
     public static final String SQL_DROP_TABLE = "DROP TABLE sample_table";
-    public static final String SQL_FIND_ERROR = "select top 1 machine_error from sample_table where machine_id = ${0}";
+    public static final String SQL_FIND_ERROR = "select top 1 machine_error from sample_table where machine_id = %s ";
     public static Logger LOG = Logger.getLogger(MachineDAO.class);
 
     private String driver;
@@ -52,13 +51,14 @@ public class MachineDAO implements AutoCloseable {
     public void createTable() throws SQLException, ClassNotFoundException {
         try {
             update(SQL_CREATE_TABLE);
-        } catch (SQLSyntaxErrorException e){
+        } catch (SQLSyntaxErrorException e) {
             LOG.warn("Table already exist " + e.getMessage());
         }
     }
 
     public void addMachineError(String id, String message) throws SQLException, ClassNotFoundException {
-        update(MessageFormat.format(SQL_INSERT_PATTERN, id, message));
+        String query = String.format(SQL_INSERT_PATTERN, id, message);
+        update(query);
     }
 
     public void dropTable() throws SQLException, ClassNotFoundException {
@@ -66,7 +66,8 @@ public class MachineDAO implements AutoCloseable {
     }
 
     public String findErrorById(String idMachine) throws SQLException, ClassNotFoundException {
-        String query = MessageFormat.format(SQL_FIND_ERROR,idMachine) ;
+        String query = String.format(SQL_FIND_ERROR, idMachine);
+        LOG.debug("run query :: " + query);
         try (Statement stmt = getConnection().createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
 
@@ -82,6 +83,7 @@ public class MachineDAO implements AutoCloseable {
 
     //use for SQL commands CREATE, DROP, INSERT and UPDATE
     private synchronized void update(String expression) throws SQLException, ClassNotFoundException {
+        LOG.debug("run query :: " + expression);
         Statement st = getConnection().createStatement();    // statements
         int i = st.executeUpdate(expression);    // run the query
         if (i == -1) {

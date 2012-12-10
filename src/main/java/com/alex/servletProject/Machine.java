@@ -1,17 +1,15 @@
 package com.alex.servletProject;
 
-import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
+import com.alex.servletProject.exceptions.SystemException;
 
-import static com.alex.servletProject.State.NONE;
-import static com.alex.servletProject.State.STATE_1;
-import static com.alex.servletProject.State.STATE_2;
+import static com.alex.servletProject.State.*;
 
 /**
  * The state machine. Has a unique ID number and status.
  * Status is changed to the following rule: {@link State#NONE} -> {@link State#STATE_1} -> {@link State#STATE_2}
  * When the {@link State#STATE_2} is complete - display and set the state {@link State#NONE}
- *
+ * <p/>
  * Date: 12/9/12
  *
  * @author Alex Rakitsky
@@ -30,11 +28,12 @@ public class Machine {
      * Constructor state machine. Has a unique ID number and status.
      * Status is changed to the following rule: {@link State#NONE} -> {@link State#STATE_1} -> {@link State#STATE_2}
      * When the {@link State#STATE_2} is complete - display and set the state {@link State#NONE}
-     * @param id unique id name
-     * @param noneErrorReader source from which to read the error message when an error switching to {@link State#STATE_1}
+     *
+     * @param id                unique id name
+     * @param noneErrorReader   source from which to read the error message when an error switching to {@link State#STATE_1}
      * @param state1ErrorReader source from which to read the error message when an error switching to {@link State#STATE_2}
      * @param state2ErrorReader source from which to read the error
-     *                            message when an error switching from {@link State#STATE_2} to {@link State#NONE}
+     *                          message when an error switching from {@link State#STATE_2} to {@link State#NONE}
      */
     public Machine(String id, IErrorReader noneErrorReader, IErrorReader state1ErrorReader, IErrorReader state2ErrorReader) {
         this.id = id;
@@ -51,15 +50,16 @@ public class Machine {
      *
      * @param signal signal status changes
      * @return message if all states had passed, not passed - empty line.
-     * @throws com.alex.servletProject.exceptions.SystemException  an error of application (error сonnect
-     *                                                             to your database, the properties file is not found, etc.)
+     * @throws com.alex.servletProject.exceptions.SystemException
+     *                              an error of application (error сonnect
+     *                              to your database, the properties file is not found, etc.)
      * @throws StateChangeException mismatch at the input to the signal necessary to change
      */
     public String nextState(int signal) throws SystemException, StateChangeException {
         String result = "";
         switch (getCurrentState()) {
             case NONE:
-                changeState(signal, noneErrorReader,STATE_1);
+                changeState(signal, noneErrorReader, STATE_1);
                 break;
             case STATE_1:
                 changeState(signal, state1ErrorReader, STATE_2);
@@ -76,11 +76,13 @@ public class Machine {
     /**
      * Сhanges the current status to the next. Сhecks the input signal with the necessary.
      * If the signal is incorrect - throws {@link StateChangeException}
-     * @param signal input signal
+     *
+     * @param signal      input signal
      * @param errorReader source from which to read the error message
-     * @param nextState next state
-     * @throws com.alex.servletProject.exceptions.SystemException  an error of application (error сonnect
-     *                                                             to your database, the properties file is not found, etc.)
+     * @param nextState   next state
+     * @throws com.alex.servletProject.exceptions.SystemException
+     *                              an error of application (error сonnect
+     *                              to your database, the properties file is not found, etc.)
      * @throws StateChangeException mismatch at the input to the signal necessary to change
      */
     private void changeState(int signal, IErrorReader errorReader, State nextState) throws StateChangeException, SystemException {
@@ -92,6 +94,7 @@ public class Machine {
 
     /**
      * Get current state.
+     *
      * @return current state of machine
      */
     State getCurrentState() {

@@ -1,7 +1,7 @@
 package com.alex.servletProject;
 
-import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
+import com.alex.servletProject.exceptions.SystemException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * </>Servlet to test the signal sequence.
@@ -41,14 +39,14 @@ public class MainServlet extends HttpServlet {
      * Constructor with not param. That initializes all the facilities required for the application.
      */
     public MainServlet() {
-        Map<String, Machine> machineMap = new HashMap<String,Machine>(){{
-            put("1",new Machine("1",null,null,null));
-            put("2",new Machine("2",null,null,null));
-            put("3",new Machine("3",null,null,null));
-            put("4",new Machine("4",null,null,null));
-            put("5",new Machine("5",null,null,null));
-        }};
-        machineService = new MachineService(machineMap);
+//        Map<String, Machine> machineMap = new HashMap<String,Machine>(){{
+//            put("1",new Machine("1",null,null,null));
+//            put("2",new Machine("2",null,null,null));
+//            put("3",new Machine("3",null,null,null));
+//            put("4",new Machine("4",null,null,null));
+//            put("5",new Machine("5",null,null,null));
+//        }};
+//        machineService = new MachineService(machineMap);
     }
 
 

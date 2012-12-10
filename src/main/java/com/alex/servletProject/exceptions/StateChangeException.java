@@ -10,6 +10,7 @@ package com.alex.servletProject.exceptions;
 public class StateChangeException extends Exception {
     /**
      * Called when an error, change the status of {@link com.alex.servletProject.Machine#nextState(int)}}.
+     *
      * @param message error message. Will be displayed on the html page.
      */
     public StateChangeException(String message) {

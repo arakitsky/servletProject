@@ -11,7 +11,7 @@ import java.sql.SQLException;
  *
  * @author Alex Rakitsky
  */
-public class DbErrorReader implements IErrorReader{
+public class DbErrorReader implements IErrorReader {
 
     private MachineDAO machineDAO;
 
@@ -25,6 +25,7 @@ public class DbErrorReader implements IErrorReader{
 
     /**
      * Read the error message from database for the respective machine.
+     *
      * @param idMachine unique id name of machine.
      * @return error message
      * @throws SystemException error with the database
@@ -33,7 +34,7 @@ public class DbErrorReader implements IErrorReader{
     public String readError(String idMachine) throws SystemException {
         try {
             return machineDAO.findErrorById(idMachine);
-        } catch (SQLException|ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new SystemException(e);
         }
     }

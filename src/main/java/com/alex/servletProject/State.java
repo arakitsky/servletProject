@@ -7,7 +7,7 @@ package com.alex.servletProject;
  * @author Alex Rakitsky
  */
 public enum State {
-    NONE(1),STATE_1(0),STATE_2(1);
+    NONE(1), STATE_1(0), STATE_2(1);
 
     /**
      * signal needed to go to the next state
@@ -24,7 +24,7 @@ public enum State {
     /**
      * @return signal needed to go to the next state.
      */
-    public int getSignalChange(){
+    public int getSignalChange() {
         return signalChange;
     }
 
