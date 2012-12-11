@@ -34,7 +34,7 @@ public class DbErrorReader implements IErrorReader {
     public String readError(String idMachine) throws SystemException {
         try {
             return machineDAO.findErrorById(idMachine);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException | IllegalArgumentException e) {
             throw new SystemException(e);
         }
     }

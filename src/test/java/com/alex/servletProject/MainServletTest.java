@@ -1,7 +1,7 @@
 package com.alex.servletProject;
 
-import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
+import com.alex.servletProject.exceptions.SystemException;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.annotations.BeforeMethod;
@@ -19,7 +19,6 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Alex Rakitsky
  */
-@Test(groups = "unit")
 public class MainServletTest {
 
     private MachineService machineService;
@@ -48,7 +47,7 @@ public class MainServletTest {
         mainServlet.doGet(request, response);
 
         assertEquals(Constants.RESPONSE_OK, response.getStatus());
-        assertEquals(message,response.getContentAsString());
+        assertEquals(message, response.getContentAsString());
         verify(machineService);
     }
 
@@ -86,7 +85,7 @@ public class MainServletTest {
         mainServlet.doGet(request, response);
 
         assertEquals(Constants.RESPONSE_OK, response.getStatus());
-        assertEquals(message,response.getContentAsString());
+        assertEquals(message, response.getContentAsString());
         verify(machineService);
     }
 }

@@ -1,7 +1,7 @@
 package com.alex.servletProject;
 
-import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
+import com.alex.servletProject.exceptions.SystemException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Alex Rakitsky
  */
-@Test(groups = "unit")
 public class MachineTest {
 
     public static final String ID_MACHINE = "1";
@@ -27,14 +26,14 @@ public class MachineTest {
     public static final String TEST_MESSAGE = "TestMessage";
 
     @BeforeTest
-    public void init(){
+    public void init() {
         mockXmlReader = createMock(IErrorReader.class);
         mockDBReader = createMock(IErrorReader.class);
         mockPropertyReader = createMock(IErrorReader.class);
     }
 
     @BeforeMethod
-    public void initMethod(){
+    public void initMethod() {
         machine = new Machine(ID_MACHINE, mockXmlReader, mockDBReader, mockPropertyReader);
         reset(mockXmlReader);
         reset(mockDBReader);
@@ -42,24 +41,24 @@ public class MachineTest {
     }
 
     @DataProvider(name = "correctStateData")
-    private Object[][] correctStateData(){
+    private Object[][] correctStateData() {
         return new Object[][]{
-                new Object[]{State.NONE,State.STATE_1},
-                new Object[]{State.STATE_1,State.STATE_2},
-                new Object[]{State.STATE_2,State.NONE},
+                new Object[]{State.NONE, State.STATE_1},
+                new Object[]{State.STATE_1, State.STATE_2},
+                new Object[]{State.STATE_2, State.NONE},
         };
     }
 
     @DataProvider(name = "exceptionData")
-    private Object[][] exceptionData(){
+    private Object[][] exceptionData() {
         return new Object[][]{
-            new Object[]{State.NONE,mockXmlReader},
-            new Object[]{State.STATE_1,mockDBReader},
-            new Object[]{State.STATE_2,mockPropertyReader},
+                new Object[]{State.NONE, mockXmlReader},
+                new Object[]{State.STATE_1, mockDBReader},
+                new Object[]{State.STATE_2, mockPropertyReader},
         };
     }
 
-    @Test(dataProvider = "exceptionData",expectedExceptions = StateChangeException.class,
+    @Test(dataProvider = "exceptionData", expectedExceptions = StateChangeException.class,
             expectedExceptionsMessageRegExp = TEST_MESSAGE)
     public void exceptionTest(State currentState, IErrorReader errorReader) throws SystemException, StateChangeException {
         machine.setCurrentState(currentState);
@@ -72,7 +71,7 @@ public class MachineTest {
     }
 
     @Test(dataProvider = "correctStateData")
-    public void stateChange(State currentState,State nextState) throws SystemException, StateChangeException {
+    public void stateChange(State currentState, State nextState) throws SystemException, StateChangeException {
         machine.setCurrentState(currentState);
 
         machine.nextState(currentState.getSignalChange());
@@ -87,7 +86,7 @@ public class MachineTest {
 
         String result = machine.nextState(currentState.getSignalChange());
 
-        assertEquals(Constants.MESSAGE_STATES_COMPLETED,result);
+        assertEquals(Constants.MESSAGE_STATES_COMPLETED, result);
     }
 
     private int incorrectState(State state) {

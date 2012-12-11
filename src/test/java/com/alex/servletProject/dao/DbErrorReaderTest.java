@@ -21,7 +21,7 @@ public class DbErrorReaderTest {
     private DbErrorReader dbErrorReader;
 
     @BeforeMethod
-    public void init(){
+    public void init() {
         machineDAO = createMock(MachineDAO.class);
         dbErrorReader = new DbErrorReader(machineDAO);
     }
@@ -35,7 +35,7 @@ public class DbErrorReaderTest {
 
         String result = dbErrorReader.readError(testId);
 
-        assertEquals(message,result);
+        assertEquals(message, result);
         verify(machineDAO);
     }
 
@@ -52,6 +52,15 @@ public class DbErrorReaderTest {
     public void testClassNotFoundException() throws Exception {
         String testId = "TestId";
         expect(machineDAO.findErrorById(testId)).andThrow(new ClassNotFoundException());
+        replay(machineDAO);
+
+        dbErrorReader.readError(testId);
+    }
+
+    @Test(expectedExceptions = SystemException.class)
+    public void testIllegalArgumentExceptionException() throws Exception {
+        String testId = "TestId";
+        expect(machineDAO.findErrorById(testId)).andThrow(new IllegalArgumentException());
         replay(machineDAO);
 
         dbErrorReader.readError(testId);

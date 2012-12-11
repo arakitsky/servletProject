@@ -23,4 +23,11 @@ public class SystemException extends Exception {
     public SystemException(Throwable cause) {
         super(cause);
     }
+
+    /**
+     * Send message with description
+     */
+    public SystemException(String message) {
+        super(message);    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }

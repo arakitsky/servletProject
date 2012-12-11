@@ -1,10 +1,10 @@
 package com.alex.servletProject;
 
-import com.alex.servletProject.exceptions.SystemException;
 import com.alex.servletProject.exceptions.StateChangeException;
+import com.alex.servletProject.exceptions.SystemException;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,6 @@ import static org.testng.Assert.assertEquals;
  *
  * @author Alex Rakitsky
  */
-@Test(groups = "unit")
 public class MachineServiceTest {
 
     public static final String CORRECT_ID = "1";
@@ -28,15 +27,15 @@ public class MachineServiceTest {
     private Machine machine_1;
 
     private Machine machine_2;
-    private Map<String,Machine> mockMachineMap;
+    private Map<String, Machine> mockMachineMap;
 
     private MachineService machineService;
 
     @BeforeMethod
-    public void init(){
+    public void init() {
         machine_1 = createMock(Machine.class);
         machine_2 = createMock(Machine.class);
-        mockMachineMap = new HashMap<String,Machine>(){{
+        mockMachineMap = new HashMap<String, Machine>() {{
             put(CORRECT_ID, machine_1);
             put(ID_2, machine_2);
         }};
@@ -48,18 +47,18 @@ public class MachineServiceTest {
         return new Object[][]{
                 new Object[]{CORRECT_ID, null},
                 new Object[]{null, CORRECT_SIGNAL},
-                new Object[]{CORRECT_ID,"blah"},
-                new Object[]{"blah",CORRECT_SIGNAL},
-                new Object[]{CORRECT_ID,"2"},
-                new Object[]{CORRECT_ID,"-1"},
-                new Object[]{"3",CORRECT_SIGNAL},
+                new Object[]{CORRECT_ID, "blah"},
+                new Object[]{"blah", CORRECT_SIGNAL},
+                new Object[]{CORRECT_ID, "2"},
+                new Object[]{CORRECT_ID, "-1"},
+                new Object[]{"3", CORRECT_SIGNAL},
         };
     }
 
     @DataProvider(name = "correctArguments")
-    public static Object[][] createCorrectData(){
-        return new Object[][] {
-                new Object[]{CORRECT_ID,CORRECT_SIGNAL},
+    public static Object[][] createCorrectData() {
+        return new Object[][]{
+                new Object[]{CORRECT_ID, CORRECT_SIGNAL},
         };
     }
 
@@ -70,7 +69,7 @@ public class MachineServiceTest {
 
     @Test
     public void testCorrectValues() throws SystemException, StateChangeException {
-        String  machineId= CORRECT_ID;
+        String machineId = CORRECT_ID;
         String message = "Test message";
         Machine machine = mockMachineMap.get(machineId);
         expect(machine.nextState(CORRECT_ID_INT)).andReturn(message);
@@ -78,13 +77,13 @@ public class MachineServiceTest {
 
         String result = machineService.setState(machineId, CORRECT_SIGNAL);
 
-        assertEquals(message,result);
+        assertEquals(message, result);
         verify(machine);
     }
 
     @Test(expectedExceptions = StateChangeException.class)
     public void testThrowStateChangeException() throws SystemException, StateChangeException {
-        String  machineId= CORRECT_ID;
+        String machineId = CORRECT_ID;
         Machine machine = mockMachineMap.get(machineId);
         machine.nextState(CORRECT_ID_INT);
         expectLastCall().andThrow(new StateChangeException("TEST_EXCEPTION"));
@@ -97,7 +96,7 @@ public class MachineServiceTest {
 
     @Test(expectedExceptions = SystemException.class)
     public void testThrowMachineException() throws SystemException, StateChangeException {
-        String  machineId= CORRECT_ID;
+        String machineId = CORRECT_ID;
         Machine machine = mockMachineMap.get(machineId);
         machine.nextState(CORRECT_ID_INT);
         expectLastCall().andThrow(new SystemException());
