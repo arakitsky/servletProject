@@ -3,8 +3,9 @@ package com.alex.servletProject.reader;
 import com.alex.servletProject.Constants;
 import com.alex.servletProject.exceptions.SystemException;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 /**
@@ -35,13 +36,13 @@ public class PropertyMessageReader implements IMessageReader {
     public String readMessage(String idMachine) throws SystemException {
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(path));
+            prop.load((new URI(path)).toURL().openStream());
             String message = prop.getProperty(Constants.PROP_MACHINE_ID + '.' + idMachine);
             if (message == null) {
                 throw new SystemException("Message for machine id = " + idMachine + " is not found");
             }
             return message;
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException | IllegalArgumentException e) {
             throw new SystemException(e);
         }
     }

@@ -14,12 +14,13 @@ public class DbMessageReader implements IMessageReader {
 
     private MachineDAO machineDAO;
 
+    //only for test, for mocking dao
     DbMessageReader(MachineDAO machineDAO) {
         this.machineDAO = machineDAO;
     }
 
     public DbMessageReader() throws SystemException {
-        machineDAO = new MachineDAO();
+        machineDAO = MachineDAO.getInstance();
     }
 
     /**

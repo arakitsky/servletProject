@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test">
+    <answer name="1">Test message xml 1</answer>
+    <answer name="2">Test message xml 2</answer>
+    <answer name="3">Test message xml 3</answer>
+    <answer name="4">Test message xml 4</answer>
+    <answer name="5">Test message xml 5</answer>
+</project>

@@ -10,12 +10,14 @@ import java.sql.*;
 /**
  * Layer to work directly with the database.
  * Working with information about errors machine.
- * Connects to the database via jdbc driver
+ * Connects to the database via jdbc driver.
  * Date: 12/10/12
  *
  * @author Alex Rakitsky
  */
 public class MachineDAO implements AutoCloseable {
+
+    public static MachineDAO instance = null;
 
     public static final String SQL_CREATE_TABLE = "CREATE TABLE sample_table ( id INTEGER IDENTITY, machine_id VARCHAR(256), machine_error VARCHAR(256))";
     public static final String SQL_INSERT_PATTERN = "INSERT INTO sample_table(machine_id,machine_error) VALUES('%s','%s')";
@@ -39,7 +41,20 @@ public class MachineDAO implements AutoCloseable {
         this.password = password;
     }
 
-    public MachineDAO() throws SystemException {
+    /**
+     * This is class is singleton.
+     *
+     * @return this singleton object
+     * @throws SystemException
+     */
+    public static MachineDAO getInstance() throws SystemException {
+        if (instance == null) {
+            instance = new MachineDAO();
+        }
+        return instance;
+    }
+
+    private MachineDAO() throws SystemException {
         driver = Constants.JDBC_DRIVER;
         url = Constants.JDBC_URL;
         dbName = Constants.JDBC_DB_NAME;
@@ -107,9 +122,4 @@ public class MachineDAO implements AutoCloseable {
         conn.close();
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        close();
-        super.finalize();
-    }
 }

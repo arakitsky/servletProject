@@ -2,7 +2,11 @@ package com.alex.servletProject;
 
 import com.alex.servletProject.exceptions.StateChangeException;
 import com.alex.servletProject.exceptions.SystemException;
+import com.alex.servletProject.reader.DbMessageReader;
 import com.alex.servletProject.reader.IMessageReader;
+import com.alex.servletProject.reader.PropertyMessageReader;
+import com.alex.servletProject.reader.XmlMessageReader;
+import org.apache.log4j.Logger;
 
 import static com.alex.servletProject.State.*;
 
@@ -17,6 +21,8 @@ import static com.alex.servletProject.State.*;
  */
 public class Machine {
 
+    public Logger LOG = Logger.getLogger(Machine.class);
+
     private final String id;
 
     private State currentState = NONE;
@@ -24,6 +30,23 @@ public class Machine {
     private IMessageReader noneErrorReader;
     private IMessageReader state1ErrorReader;
     private IMessageReader state2ErrorReader;
+
+
+    /**
+     * The constructor initializes the default field values.
+     *
+     * @param id unique id name
+     */
+    public Machine(String id) throws SystemException {
+        String pathToXml = getClass().getResource(Constants.PATH_MESSAGE_FILE_XML).toString();
+        String pathProperty = getClass().getResource(Constants.PATH_MESSAGE_FILE_PROPERTY).toString();
+        LOG.debug("Path to xml message file :: " + pathToXml);
+        LOG.debug("Path to property message file :: " + pathProperty);
+        noneErrorReader = new XmlMessageReader(pathToXml);
+        state1ErrorReader = new DbMessageReader();
+        state2ErrorReader = new PropertyMessageReader(pathProperty);
+        this.id = id;
+    }
 
     /**
      * Constructor state machine. Has a unique ID number and status.
@@ -88,8 +111,11 @@ public class Machine {
      */
     private void changeState(int signal, IMessageReader errorReader, State nextState) throws StateChangeException, SystemException {
         if (getCurrentState().getSignalChange() != signal) {
-            throw new StateChangeException(errorReader.readMessage(id));
+            String message = errorReader.readMessage(id);
+            LOG.info("Incorrect input state for machine " + id + " - state not change read error message :: " + message);
+            throw new StateChangeException(message);
         }
+        LOG.info("State machine id = " + id + " has changed from " + getCurrentState() + " to " + nextState);
         setCurrentState(nextState);
     }
 

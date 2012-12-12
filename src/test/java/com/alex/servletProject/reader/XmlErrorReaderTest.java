@@ -1,8 +1,9 @@
-package com.alex.servletProject;
+package com.alex.servletProject.reader;
 
 import com.alex.servletProject.exceptions.SystemException;
-import com.alex.servletProject.reader.XmlMessageReader;
 import org.testng.annotations.Test;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,14 +15,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class XmlErrorReaderTest {
 
-    public static final String FILE_CORRECT_PATH = "./src/test/resourses/correct.xml";
-    public static final String FILE_INCORRECT_PATH = "./src/test/resourses/inCorrect.xml";
-
     @Test
     public void correctXmlParse() throws SystemException {
+
+        String path = getClass().getResource(File.separator + "correct.xml").toString();
         String expected = "Test message 1";
         String id = "1";
-        XmlMessageReader xmlErrorReader = new XmlMessageReader(FILE_CORRECT_PATH);
+        XmlMessageReader xmlErrorReader = new XmlMessageReader(path);
 
         String result = xmlErrorReader.readMessage(id);
 
@@ -30,8 +30,9 @@ public class XmlErrorReaderTest {
 
     @Test(expectedExceptions = SystemException.class)
     public void inCorrectXmlParse() throws SystemException {
+        String incorrectPath = XmlErrorReaderTest.class.getResource(File.separator + "inCorrect.xml").toString();
         String id = "1";
-        XmlMessageReader xmlErrorReader = new XmlMessageReader(FILE_INCORRECT_PATH);
+        XmlMessageReader xmlErrorReader = new XmlMessageReader(incorrectPath);
 
         xmlErrorReader.readMessage(id);
     }

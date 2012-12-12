@@ -46,7 +46,7 @@ public class MainServletTest {
 
         mainServlet.doGet(request, response);
 
-        assertEquals(Constants.RESPONSE_OK, response.getStatus());
+        assertEquals(Constants.RESPONSE_STATUS_OK, response.getStatus());
         assertEquals(message, response.getContentAsString());
         verify(machineService);
     }
@@ -59,7 +59,7 @@ public class MainServletTest {
 
         mainServlet.doGet(request, response);
 
-        assertEquals(Constants.RESPONSE_BED, response.getStatus());
+        assertEquals(Constants.RESPONSE_STATUS_BED, response.getStatus());
         verify(machineService);
     }
 
@@ -71,7 +71,7 @@ public class MainServletTest {
 
         mainServlet.doGet(request, response);
 
-        assertEquals(Constants.RESPONSE_SERVER_ERROR, response.getStatus());
+        assertEquals(Constants.RESPONSE_STATUS_SERVER_ERROR, response.getStatus());
         assertEquals(Constants.MESSAGE_SYSTEM_ERROR, response.getContentAsString());
         verify(machineService);
     }
@@ -85,7 +85,7 @@ public class MainServletTest {
 
         mainServlet.doGet(request, response);
 
-        assertEquals(Constants.RESPONSE_OK, response.getStatus());
+        assertEquals(Constants.RESPONSE_STATUS_OK, response.getStatus());
         assertEquals(message, response.getContentAsString());
         verify(machineService);
     }

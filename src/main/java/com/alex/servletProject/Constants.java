@@ -1,5 +1,7 @@
 package com.alex.servletProject;
 
+import java.io.File;
+
 /**
  * All constants for project.
  * Date: 12/9/12
@@ -13,19 +15,19 @@ public final class Constants {
      *
      * @see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">Status code definitions</a>
      */
-    public static final int RESPONSE_OK = 200;
+    public static final int RESPONSE_STATUS_OK = 200;
     /**
      * Response status, set the invalid input parameters.
      *
      * @see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">Status code definitions</a>
      */
-    public static final int RESPONSE_BED = 400;
+    public static final int RESPONSE_STATUS_BED = 400;
     /**
      * Response status, set by internal application error.
      *
      * @see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">Status code definitions</a>
      */
-    public static final int RESPONSE_SERVER_ERROR = 500;
+    public static final int RESPONSE_STATUS_SERVER_ERROR = 500;
 
     /**
      * http request params for machine id.
@@ -70,4 +72,16 @@ public final class Constants {
      * Unique identifier in the file properties of the message machine.
      */
     public static final String PROP_MACHINE_ID = "machine";
+
+    /**
+     * Path to file xml with machine error messages.
+     * Used on {@link com.alex.servletProject.reader.XmlMessageReader}.
+     */
+    public static final String PATH_MESSAGE_FILE_XML = File.separator + "messages.xml";
+
+    /**
+     * Path to file property with machine error messages.
+     * Used on {@link com.alex.servletProject.reader.PropertyMessageReader}
+     */
+    public static final String PATH_MESSAGE_FILE_PROPERTY = File.separator + "messages.properties";
 }

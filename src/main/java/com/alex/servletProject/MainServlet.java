@@ -2,6 +2,7 @@ package com.alex.servletProject;
 
 import com.alex.servletProject.exceptions.StateChangeException;
 import com.alex.servletProject.exceptions.SystemException;
+import com.alex.servletProject.reader.MachineDAO;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * </>Servlet to test the signal sequence.
@@ -38,15 +42,35 @@ public class MainServlet extends HttpServlet {
     /**
      * Constructor with not param. That initializes all the facilities required for the application.
      */
-    public MainServlet() {
-//        Map<String, Machine> machineMap = new HashMap<String,Machine>(){{
-//            put("1",new Machine("1",null,null,null));
-//            put("2",new Machine("2",null,null,null));
-//            put("3",new Machine("3",null,null,null));
-//            put("4",new Machine("4",null,null,null));
-//            put("5",new Machine("5",null,null,null));
-//        }};
-//        machineService = new MachineService(machineMap);
+    public MainServlet() throws SystemException, SQLException, ClassNotFoundException {
+        Map<String, Machine> machineMap = new HashMap<String, Machine>() {{
+            put("1", new Machine("1"));
+            put("2", new Machine("2"));
+            put("3", new Machine("3"));
+            put("4", new Machine("4"));
+            put("5", new Machine("5"));
+        }};
+        machineService = new MachineService(machineMap);
+
+        //for correct work program init mock db
+        initDB();
+    }
+
+    /**
+     * Insert values in mock database.
+     *
+     * @throws SystemException
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    private void initDB() throws SystemException, SQLException, ClassNotFoundException {
+        MachineDAO machineDAO = MachineDAO.getInstance();
+        machineDAO.createTable();
+        machineDAO.addMachineError("1", "Machine error message 1");
+        machineDAO.addMachineError("2", "Machine error message 2");
+        machineDAO.addMachineError("3", "Machine error message 3");
+        machineDAO.addMachineError("4", "Machine error message 4");
+        machineDAO.addMachineError("5", "Machine error message 5");
     }
 
 
@@ -75,19 +99,19 @@ public class MainServlet extends HttpServlet {
 
             LOG.debug("Response :: " + response);
             out.print(response);
-            resp.setStatus(Constants.RESPONSE_OK);
+            resp.setStatus(Constants.RESPONSE_STATUS_OK);
         } catch (IllegalArgumentException e) {
             LOG.warn(e);
 
-            resp.setStatus(Constants.RESPONSE_BED);
+            resp.setStatus(Constants.RESPONSE_STATUS_BED);
         } catch (SystemException e) {
             LOG.error(e);
             out.write(Constants.MESSAGE_SYSTEM_ERROR);
-            resp.setStatus(Constants.RESPONSE_SERVER_ERROR);
+            resp.setStatus(Constants.RESPONSE_STATUS_SERVER_ERROR);
         } catch (StateChangeException e) {
             LOG.info(e);
             out.print(e.getMessage());
-            resp.setStatus(Constants.RESPONSE_OK);
+            resp.setStatus(Constants.RESPONSE_STATUS_OK);
         }
 
     }
