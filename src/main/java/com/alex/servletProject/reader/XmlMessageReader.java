@@ -1,4 +1,4 @@
-package com.alex.servletProject;
+package com.alex.servletProject.reader;
 
 import com.alex.servletProject.exceptions.SystemException;
 import org.xml.sax.Attributes;
@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @author Alex Rakitsky
  */
-public class XmlErrorReader extends DefaultHandler implements IErrorReader {
+public class XmlMessageReader extends DefaultHandler implements IMessageReader {
 
     private String path;
 
@@ -31,7 +31,7 @@ public class XmlErrorReader extends DefaultHandler implements IErrorReader {
     /**
      * @param path path to parsed xml file.
      */
-    public XmlErrorReader(String path) {
+    public XmlMessageReader(String path) {
         this.path = path;
     }
 
@@ -65,7 +65,7 @@ public class XmlErrorReader extends DefaultHandler implements IErrorReader {
      * @throws SystemException error with the database
      */
     @Override
-    public String readError(String idMachine) throws SystemException {
+    public String readMessage(String idMachine) throws SystemException {
         resultMap = new HashMap<>();
         SAXParserFactory factory = SAXParserFactory.newInstance();
         try {

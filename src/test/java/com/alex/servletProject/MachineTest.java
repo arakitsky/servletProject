@@ -2,6 +2,7 @@ package com.alex.servletProject;
 
 import com.alex.servletProject.exceptions.StateChangeException;
 import com.alex.servletProject.exceptions.SystemException;
+import com.alex.servletProject.reader.IMessageReader;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
@@ -19,17 +20,17 @@ import static org.junit.Assert.assertEquals;
 public class MachineTest {
 
     public static final String ID_MACHINE = "1";
-    private IErrorReader mockXmlReader;
-    private IErrorReader mockDBReader;
-    private IErrorReader mockPropertyReader;
+    private IMessageReader mockXmlReader;
+    private IMessageReader mockDBReader;
+    private IMessageReader mockPropertyReader;
     private Machine machine;
     public static final String TEST_MESSAGE = "TestMessage";
 
     @BeforeTest
     public void init() {
-        mockXmlReader = createMock(IErrorReader.class);
-        mockDBReader = createMock(IErrorReader.class);
-        mockPropertyReader = createMock(IErrorReader.class);
+        mockXmlReader = createMock(IMessageReader.class);
+        mockDBReader = createMock(IMessageReader.class);
+        mockPropertyReader = createMock(IMessageReader.class);
     }
 
     @BeforeMethod
@@ -60,9 +61,9 @@ public class MachineTest {
 
     @Test(dataProvider = "exceptionData", expectedExceptions = StateChangeException.class,
             expectedExceptionsMessageRegExp = TEST_MESSAGE)
-    public void exceptionTest(State currentState, IErrorReader errorReader) throws SystemException, StateChangeException {
+    public void exceptionTest(State currentState, IMessageReader errorReader) throws SystemException, StateChangeException {
         machine.setCurrentState(currentState);
-        expect(errorReader.readError(ID_MACHINE)).andReturn(TEST_MESSAGE);
+        expect(errorReader.readMessage(ID_MACHINE)).andReturn(TEST_MESSAGE);
         replay(errorReader);
 
         machine.nextState(incorrectState(currentState));

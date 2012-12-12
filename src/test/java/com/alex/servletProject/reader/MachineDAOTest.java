@@ -1,4 +1,4 @@
-package com.alex.servletProject.dao;
+package com.alex.servletProject.reader;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;

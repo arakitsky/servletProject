@@ -1,6 +1,7 @@
 package com.alex.servletProject;
 
 import com.alex.servletProject.exceptions.SystemException;
+import com.alex.servletProject.reader.PropertyMessageReader;
 import org.testng.annotations.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,24 +18,24 @@ public class PropertyErrorReaderTest {
 
     @Test
     public void correctFile() throws SystemException {
-        PropertyErrorReader propertyErrorReader = new PropertyErrorReader(PATH_CORRECT_FILE);
+        PropertyMessageReader propertyErrorReader = new PropertyMessageReader(PATH_CORRECT_FILE);
 
-        String result = propertyErrorReader.readError("1");
+        String result = propertyErrorReader.readMessage("1");
 
         assertEquals("Test message property 1",result);
     }
 
     @Test(expectedExceptions = SystemException.class)
     public void propertyNotFound() throws SystemException {
-        PropertyErrorReader propertyErrorReader = new PropertyErrorReader(PATH_CORRECT_FILE);
+        PropertyMessageReader propertyErrorReader = new PropertyMessageReader(PATH_CORRECT_FILE);
 
-        propertyErrorReader.readError("123");
+        propertyErrorReader.readMessage("123");
     }
 
     @Test(expectedExceptions = SystemException.class)
     public void incorrectFile() throws SystemException {
-        PropertyErrorReader propertyErrorReader = new PropertyErrorReader("blah");
+        PropertyMessageReader propertyErrorReader = new PropertyMessageReader("blah");
 
-        propertyErrorReader.readError("123");
+        propertyErrorReader.readMessage("123");
     }
 }

@@ -40,6 +40,10 @@ public final class Constants {
      * Message passing all states.
      */
     public static final String MESSAGE_STATES_COMPLETED = "All ok";
+    /**
+     * Unexpected system error client message
+     */
+    public static final String MESSAGE_SYSTEM_ERROR = "Sorry an unexpected error";
 
     /**
      * Jdbc driver name.

@@ -78,9 +78,11 @@ public class MainServlet extends HttpServlet {
             resp.setStatus(Constants.RESPONSE_OK);
         } catch (IllegalArgumentException e) {
             LOG.warn(e);
+
             resp.setStatus(Constants.RESPONSE_BED);
         } catch (SystemException e) {
-            LOG.warn(e);
+            LOG.error(e);
+            out.write(Constants.MESSAGE_SYSTEM_ERROR);
             resp.setStatus(Constants.RESPONSE_SERVER_ERROR);
         } catch (StateChangeException e) {
             LOG.info(e);

@@ -72,6 +72,7 @@ public class MainServletTest {
         mainServlet.doGet(request, response);
 
         assertEquals(Constants.RESPONSE_SERVER_ERROR, response.getStatus());
+        assertEquals(Constants.MESSAGE_SYSTEM_ERROR, response.getContentAsString());
         verify(machineService);
     }
 

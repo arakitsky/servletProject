@@ -1,12 +1,13 @@
 package com.alex.servletProject;
 
 import com.alex.servletProject.exceptions.SystemException;
+import com.alex.servletProject.reader.XmlMessageReader;
 import org.testng.annotations.Test;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test for {@link com.alex.servletProject.XmlErrorReader}.
+ * Test for {@link com.alex.servletProject.reader.XmlMessageReader}.
  * Date: 12/11/12
  *
  * @author Alex Rakitsky
@@ -20,9 +21,9 @@ public class XmlErrorReaderTest {
     public void correctXmlParse() throws SystemException {
         String expected = "Test message 1";
         String id = "1";
-        XmlErrorReader xmlErrorReader = new XmlErrorReader(FILE_CORRECT_PATH);
+        XmlMessageReader xmlErrorReader = new XmlMessageReader(FILE_CORRECT_PATH);
 
-        String result = xmlErrorReader.readError(id);
+        String result = xmlErrorReader.readMessage(id);
 
         assertEquals(expected, result);
     }
@@ -30,16 +31,16 @@ public class XmlErrorReaderTest {
     @Test(expectedExceptions = SystemException.class)
     public void inCorrectXmlParse() throws SystemException {
         String id = "1";
-        XmlErrorReader xmlErrorReader = new XmlErrorReader(FILE_INCORRECT_PATH);
+        XmlMessageReader xmlErrorReader = new XmlMessageReader(FILE_INCORRECT_PATH);
 
-        xmlErrorReader.readError(id);
+        xmlErrorReader.readMessage(id);
     }
 
     @Test(expectedExceptions = SystemException.class)
     public void notFoundXmlParse() throws SystemException {
         String id = "1";
-        XmlErrorReader xmlErrorReader = new XmlErrorReader("blah");
+        XmlMessageReader xmlErrorReader = new XmlMessageReader("blah");
 
-        xmlErrorReader.readError(id);
+        xmlErrorReader.readMessage(id);
     }
 }

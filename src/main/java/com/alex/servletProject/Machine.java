@@ -2,6 +2,7 @@ package com.alex.servletProject;
 
 import com.alex.servletProject.exceptions.StateChangeException;
 import com.alex.servletProject.exceptions.SystemException;
+import com.alex.servletProject.reader.IMessageReader;
 
 import static com.alex.servletProject.State.*;
 
@@ -20,9 +21,9 @@ public class Machine {
 
     private State currentState = NONE;
 
-    private IErrorReader noneErrorReader;
-    private IErrorReader state1ErrorReader;
-    private IErrorReader state2ErrorReader;
+    private IMessageReader noneErrorReader;
+    private IMessageReader state1ErrorReader;
+    private IMessageReader state2ErrorReader;
 
     /**
      * Constructor state machine. Has a unique ID number and status.
@@ -35,7 +36,7 @@ public class Machine {
      * @param state2ErrorReader source from which to read the error
      *                          message when an error switching from {@link State#STATE_2} to {@link State#NONE}
      */
-    public Machine(String id, IErrorReader noneErrorReader, IErrorReader state1ErrorReader, IErrorReader state2ErrorReader) {
+    public Machine(String id, IMessageReader noneErrorReader, IMessageReader state1ErrorReader, IMessageReader state2ErrorReader) {
         this.id = id;
         this.noneErrorReader = noneErrorReader;
         this.state1ErrorReader = state1ErrorReader;
@@ -85,9 +86,9 @@ public class Machine {
      *                              to your database, the properties file is not found, etc.)
      * @throws StateChangeException mismatch at the input to the signal necessary to change
      */
-    private void changeState(int signal, IErrorReader errorReader, State nextState) throws StateChangeException, SystemException {
+    private void changeState(int signal, IMessageReader errorReader, State nextState) throws StateChangeException, SystemException {
         if (getCurrentState().getSignalChange() != signal) {
-            throw new StateChangeException(errorReader.readError(id));
+            throw new StateChangeException(errorReader.readMessage(id));
         }
         setCurrentState(nextState);
     }

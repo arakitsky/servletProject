@@ -1,4 +1,4 @@
-package com.alex.servletProject;
+package com.alex.servletProject.reader;
 
 import com.alex.servletProject.exceptions.SystemException;
 
@@ -8,7 +8,7 @@ import com.alex.servletProject.exceptions.SystemException;
  *
  * @author Alex Rakitsky
  */
-public interface IErrorReader {
+public interface IMessageReader {
 
     /**
      * Read the error message for the respective machine.
@@ -17,5 +17,5 @@ public interface IErrorReader {
      * @return error message
      * @throws SystemException an error of application (error сonnect to your database, the properties file is not found, etc.)
      */
-    public String readError(String idMachine) throws SystemException;
+    public String readMessage(String idMachine) throws SystemException;
 }

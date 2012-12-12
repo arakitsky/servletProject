@@ -1,4 +1,4 @@
-package com.alex.servletProject.dao;
+package com.alex.servletProject.reader;
 
 import com.alex.servletProject.Constants;
 import com.alex.servletProject.exceptions.SystemException;

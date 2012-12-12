@@ -1,5 +1,6 @@
-package com.alex.servletProject;
+package com.alex.servletProject.reader;
 
+import com.alex.servletProject.Constants;
 import com.alex.servletProject.exceptions.SystemException;
 
 import java.io.FileInputStream;
@@ -12,14 +13,14 @@ import java.util.Properties;
  *
  * @author Alex Rakitsky
  */
-public class PropertyErrorReader implements IErrorReader {
+public class PropertyMessageReader implements IMessageReader {
 
     String path;
 
     /**
      * @param path path to property file.
      */
-    public PropertyErrorReader(String path) {
+    public PropertyMessageReader(String path) {
         this.path = path;
     }
 
@@ -31,7 +32,7 @@ public class PropertyErrorReader implements IErrorReader {
      * @throws SystemException property not found, read property file exception.
      */
     @Override
-    public String readError(String idMachine) throws SystemException {
+    public String readMessage(String idMachine) throws SystemException {
         Properties prop = new Properties();
         try {
             prop.load(new FileInputStream(path));

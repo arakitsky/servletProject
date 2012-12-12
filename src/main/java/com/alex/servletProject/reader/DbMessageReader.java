@@ -1,6 +1,5 @@
-package com.alex.servletProject.dao;
+package com.alex.servletProject.reader;
 
-import com.alex.servletProject.IErrorReader;
 import com.alex.servletProject.exceptions.SystemException;
 
 import java.sql.SQLException;
@@ -11,15 +10,15 @@ import java.sql.SQLException;
  *
  * @author Alex Rakitsky
  */
-public class DbErrorReader implements IErrorReader {
+public class DbMessageReader implements IMessageReader {
 
     private MachineDAO machineDAO;
 
-    DbErrorReader(MachineDAO machineDAO) {
+    DbMessageReader(MachineDAO machineDAO) {
         this.machineDAO = machineDAO;
     }
 
-    public DbErrorReader() throws SystemException {
+    public DbMessageReader() throws SystemException {
         machineDAO = new MachineDAO();
     }
 
@@ -31,7 +30,7 @@ public class DbErrorReader implements IErrorReader {
      * @throws SystemException error with the database
      */
     @Override
-    public String readError(String idMachine) throws SystemException {
+    public String readMessage(String idMachine) throws SystemException {
         try {
             return machineDAO.findErrorById(idMachine);
         } catch (SQLException | ClassNotFoundException | IllegalArgumentException e) {
