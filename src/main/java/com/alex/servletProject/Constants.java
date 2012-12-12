@@ -61,4 +61,9 @@ public final class Constants {
      * Jdbc url.
      */
     public static final String JDBC_URL = "jdbc:hsqldb:";
+
+    /**
+     * Unique identifier in the file properties of the message machine.
+     */
+    public static final String PROP_MACHINE_ID = "machine";
 }
