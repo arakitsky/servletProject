@@ -43,14 +43,7 @@ public class MainServlet extends HttpServlet {
      * Constructor with not param. That initializes all the facilities required for the application.
      */
     public MainServlet() throws SystemException, SQLException, ClassNotFoundException {
-        Map<String, Machine> machineMap = new HashMap<String, Machine>() {{
-            put("1", new Machine("1"));
-            put("2", new Machine("2"));
-            put("3", new Machine("3"));
-            put("4", new Machine("4"));
-            put("5", new Machine("5"));
-        }};
-        machineService = new MachineService(machineMap);
+        machineService = new MachineService();
 
         //for correct work program init mock db
         initDB();

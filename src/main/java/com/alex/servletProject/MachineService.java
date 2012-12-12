@@ -3,7 +3,9 @@ package com.alex.servletProject;
 
 import com.alex.servletProject.exceptions.StateChangeException;
 import com.alex.servletProject.exceptions.SystemException;
+import org.apache.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,15 +16,26 @@ import java.util.Map;
  */
 public class MachineService {
 
+    private static final Logger LOG = Logger.getLogger(MachineService.class);
+
     private final Map<String, Machine> machineMap;
 
     /**
+     * Used for test.
      * Сhanges the state of the {@link Machine}.
      *
      * @param mockMachineMap map of available machines.
      */
-    public MachineService(Map<String, Machine> mockMachineMap) {
+    MachineService(Map<String, Machine> mockMachineMap) {
         this.machineMap = mockMachineMap;
+    }
+
+    /**
+     * Сhanges the state of the {@link Machine}.
+     *
+     */
+    public MachineService() {
+        this.machineMap = new HashMap<String, Machine> ();
     }
 
     /**
@@ -56,7 +69,9 @@ public class MachineService {
 
         Machine machine = machineMap.get(machineId);
         if (machine == null) {
-            throw new IllegalArgumentException();
+            machine =new Machine(machineId);
+            LOG.info("Create new machine" + machine);
+            machineMap.put(machineId,machine);
         }
 
         return machine.nextState(signalInt);

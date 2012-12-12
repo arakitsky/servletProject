@@ -48,10 +48,8 @@ public class MachineServiceTest {
                 new Object[]{CORRECT_ID, null},
                 new Object[]{null, CORRECT_SIGNAL},
                 new Object[]{CORRECT_ID, "blah"},
-                new Object[]{"blah", CORRECT_SIGNAL},
                 new Object[]{CORRECT_ID, "2"},
                 new Object[]{CORRECT_ID, "-1"},
-                new Object[]{"3", CORRECT_SIGNAL},
         };
     }
 
