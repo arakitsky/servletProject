@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.easymock.EasyMock.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 /**
  * Test class for {@link MachineService}.
@@ -24,10 +24,11 @@ public class MachineServiceTest {
     public static final String ID_2 = "2";
     public static final String CORRECT_SIGNAL = "1";
     public static final int CORRECT_ID_INT = 1;
-    private Machine machine_1;
 
+    private Machine machine_1;
     private Machine machine_2;
     private Map<String, Machine> mockMachineMap;
+    private MachineFactory mockMachineFactory;
 
     private MachineService machineService;
 
@@ -39,7 +40,8 @@ public class MachineServiceTest {
             put(CORRECT_ID, machine_1);
             put(ID_2, machine_2);
         }};
-        machineService = new MachineService(mockMachineMap);
+        mockMachineFactory = createMock(MachineFactory.class);
+        machineService = new MachineService(mockMachineMap, mockMachineFactory);
     }
 
     @DataProvider(name = "illegalArguments")
@@ -103,6 +105,37 @@ public class MachineServiceTest {
         machineService.setState(machineId, CORRECT_SIGNAL);
 
         verify(machine);
+    }
+
+    @Test
+    public void testNotValidSignalNotAddMachine() throws SystemException, StateChangeException {
+        String exclusiveId = "100500";
+        int incorrectSignal = 1;
+        expect(mockMachineFactory.createMachine(exclusiveId)).andReturn(machine_1);
+        expect(machine_1.nextState(incorrectSignal)).andThrow(new StateChangeException("Test state change exception"));
+        replay(mockMachineFactory, machine_1);
+
+
+        try {
+            machineService.setState(exclusiveId, String.valueOf(incorrectSignal));
+        } catch (StateChangeException e) {
+        }
+
+        assertFalse(machineService.getMachineMap().containsKey(exclusiveId));
+    }
+
+    @Test
+    public void testValidSignalNotAddMachine() throws SystemException, StateChangeException {
+        String exclusiveId = "100500";
+        int correctSignal = 1;
+        expect(mockMachineFactory.createMachine(exclusiveId)).andReturn(machine_1);
+        expect(machine_1.nextState(correctSignal)).andReturn("");
+        replay(mockMachineFactory, machine_1);
+
+
+        machineService.setState(exclusiveId, String.valueOf(correctSignal));
+
+        assertTrue(machineService.getMachineMap().containsKey(exclusiveId));
     }
 
 }

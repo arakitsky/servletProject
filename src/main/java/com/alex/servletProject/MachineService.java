@@ -18,7 +18,9 @@ public class MachineService {
 
     private static final Logger LOG = Logger.getLogger(MachineService.class);
 
-    private final Map<String, Machine> machineMap;
+    private Map<String, Machine> machineMap;
+
+    private MachineFactory machineFactory;
 
     /**
      * Used for test.
@@ -26,16 +28,26 @@ public class MachineService {
      *
      * @param mockMachineMap map of available machines.
      */
-    MachineService(Map<String, Machine> mockMachineMap) {
+    MachineService(Map<String, Machine> mockMachineMap,MachineFactory machineFactory) {
         this.machineMap = mockMachineMap;
+        this.machineFactory = machineFactory;
     }
 
     /**
      * Сhanges the state of the {@link Machine}.
-     *
      */
     public MachineService() {
-        this.machineMap = new HashMap<String, Machine> ();
+        this.machineMap = new HashMap<String, Machine>();
+        machineFactory = new MachineFactory();
+    }
+
+    /**
+     * Get list of all available machines.
+     *
+     * @return list of all available machines.
+     */
+    public Map<String, Machine> getMachineMap() {
+        return machineMap;
     }
 
     /**
@@ -68,13 +80,19 @@ public class MachineService {
         }
 
         Machine machine = machineMap.get(machineId);
+        String result;
+
         if (machine == null) {
-            machine =new Machine(machineId);
+            machine = machineFactory.createMachine(machineId);
+            result = machine.nextState(signalInt);
             LOG.info("Create new machine" + machine);
-            machineMap.put(machineId,machine);
+            machineMap.put(machineId, machine);
+        } else {
+            result = machine.nextState(signalInt);
         }
 
-        return machine.nextState(signalInt);
-
+        return result;
     }
+
+
 }
